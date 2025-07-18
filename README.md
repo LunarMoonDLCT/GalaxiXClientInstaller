@@ -5,7 +5,9 @@ It downloads the Galaxy Client from GitHub and installs it directly into your `.
 
 ---
 ## If linux error sound
+
 If you are a Linux user and the game has sound errors or no sound, please use the [fabric](https://fabricmc.net/) version to fix the error.
+
 ---
 
 ## ✅ Features
