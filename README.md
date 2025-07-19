@@ -46,7 +46,8 @@ If you are a Linux user and the game has sound errors or no sound, please use th
 
 1.Requirements to build
 
-  JDK 8 or higher
+  1.JDK 8 or higher
+  2.Gradlew
 
 ---
 2.Build commands
