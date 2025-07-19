@@ -20,7 +20,7 @@ public class ZipExtractor {
                     if (entry.isDirectory()) {
                         filePath.mkdirs();
                     } else {
-                        // Tạo thư mục cha nếu chưa có
+                        // Tạo thư mục CHA nếu chưa có thư mục đấy
                         File parent = filePath.getParentFile();
                         if (!parent.exists()) {
                             parent.mkdirs();

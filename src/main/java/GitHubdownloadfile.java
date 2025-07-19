@@ -14,41 +14,34 @@ public class GitHubdownloadfile {
         conn.setRequestProperty("User-Agent", "GalaxyClientInstaller");
 
         if (conn.getResponseCode() != 200) {
-            throw new IOException("GitHub API returned status " + conn.getResponseCode());
+            throw new IOException("GitHub API trả về lỗi " + conn.getResponseCode());
         }
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
         StringBuilder json = new StringBuilder();
         String line;
-
         while ((line = reader.readLine()) != null) {
             json.append(line);
         }
         reader.close();
 
-        // Lọc ra các mục chỉ chọn đúng file (GalaxyClient*.zip, download_url)
-        Pattern pattern = Pattern.compile(
-            "\"name\"\\s*:\\s*\"(GalaxyClient[^\"]+\\.zip)\".*?\"browser_download_url\"\\s*:\\s*\"([^\"]+)\"",
-            Pattern.DOTALL
-        );
-
+        // Lọc toàn các file chỉ đúng tên GalaxyClient
+        Pattern pattern = Pattern.compile("\"name\"\\s*:\\s*\"(GalaxyClient[^\"]+\\.zip)\".*?\"browser_download_url\"\\s*:\\s*\"([^\"]+)\"", Pattern.DOTALL);
         Matcher matcher = pattern.matcher(json.toString());
-        Map<String, String> versions = new LinkedHashMap<>();
 
+        Map<String, String> result = new LinkedHashMap<>();
         while (matcher.find()) {
-            String versionName = matcher.group(1).replace(".zip", "");
-            String downloadUrl = matcher.group(2);
-            versions.put(versionName, downloadUrl);
+            result.put(matcher.group(1).replace(".zip", ""), matcher.group(2));
         }
 
-        if (versions.isEmpty()) {
-            throw new IOException("Không tìm thấy bản GalaxyClient*.zip nào.");
+        if (result.isEmpty()) {
+            throw new IOException("Không tìm thấy bản phát hành nào!");
         }
 
-        return versions;
+        return result;
     }
 
-    public static File downloadZip(String urlStr, String versionTag) throws IOException {
+    public static File downloadZip(String urlStr, String versionTag, File installDir) throws IOException {
         URL url = new URL(urlStr);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestProperty("User-Agent", "GalaxyClientInstaller");
@@ -57,10 +50,10 @@ public class GitHubdownloadfile {
             throw new IOException("Không thể tải về file từ GitHub: " + conn.getResponseCode());
         }
 
-        File tempFile = new File(System.getProperty("java.io.tmpdir"), "GalaxyClient-" + versionTag + ".zip");
+        File zipFile = new File(installDir, "GalaxyClient-" + versionTag + ".zip");
 
         try (InputStream in = conn.getInputStream();
-             FileOutputStream out = new FileOutputStream(tempFile)) {
+             FileOutputStream out = new FileOutputStream(zipFile)) {
 
             byte[] buffer = new byte[4096];
             int bytesRead;
@@ -70,6 +63,6 @@ public class GitHubdownloadfile {
             }
         }
 
-        return tempFile;
+        return zipFile;
     }
 }

@@ -47,7 +47,7 @@ public class MainUI extends JFrame {
         gbc.gridx = 1; gbc.gridy = 1;
         panel.add(pathField, gbc);
 
-        // Nút chọn chỗ chứa minecraft
+        // Nút chọn thư mục dẫn đến Minecraft
         browseButton = new JButton("...");
         gbc.gridx = 2; gbc.gridy = 1; gbc.weightx = 0;
         panel.add(browseButton, gbc);
@@ -62,7 +62,7 @@ public class MainUI extends JFrame {
             }
         });
 
-        // Checkbox tạo hồ sơ để trưng
+        // Checkbox tạo hồ sơ chỉ để trưng
         profileCheckbox = new JCheckBox("Tạo hồ sơ trong launcher");
         profileCheckbox.setSelected(true);
         gbc.gridx = 1; gbc.gridy = 2; gbc.gridwidth = 2;
@@ -83,10 +83,7 @@ public class MainUI extends JFrame {
         new Thread(() -> {
             try {
                 Map<String, String> rawMap = GitHubdownloadfile.getAllZipReleases();
-
-                // Sắp xếp các phiên bản
                 java.util.List<Entry<String, String>> sortedList = new java.util.ArrayList<>(rawMap.entrySet());
-
                 sortedList.sort((e1, e2) -> compareVersions(e2.getKey(), e1.getKey()));
 
                 versionMap = new LinkedHashMap<>();
@@ -130,11 +127,18 @@ public class MainUI extends JFrame {
 
         new Thread(() -> {
             try {
-                File zip = GitHubdownloadfile.downloadZip(downloadUrl, versionName);
-                ZipExtractor.extract(zip, new File(installPath));
+                File installDir = new File(installPath);
+                File zip = GitHubdownloadfile.downloadZip(downloadUrl, versionName, installDir);
+
+                ZipExtractor.extract(zip, installDir);
+
+                // Xoá file ZIP sau khi giải nén xong hoặc cài đặt xong
+                if (zip.exists()) {
+                    zip.delete();
+                }
 
                 if (profileCheckbox.isSelected()) {
-                    // Ghi vào launcher_profiles.json
+                    // Ghi launcher_profiles.json
                 }
 
                 SwingUtilities.invokeLater(() -> {
@@ -146,8 +150,7 @@ public class MainUI extends JFrame {
                 SwingUtilities.invokeLater(() -> {
                     installButton.setEnabled(true);
                     installButton.setText("Cài đặt");
-                    JOptionPane.showMessageDialog(this, "Cài đặt thất bại:\n" + ex.getMessage(),
-                            "Lỗi", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Cài đặt thất bại:\n" + ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
                 });
             }
         }).start();
