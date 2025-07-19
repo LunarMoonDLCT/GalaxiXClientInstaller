@@ -3,6 +3,21 @@
 This is a simple Java-based installer for the Galaxy Client Minecraft.  
 It downloads the Galaxy Client from GitHub and installs it directly into your `.minecraft` directory.
 
+If you use Windows to run exe files, download [JRE](https://www.java.com/en/download/manual.jsp) to run the application.
+if you use linux or mac os to run, open Terminal, then type the following: 
+(linux)
+```bash
+sudo apt install default-jre
+```
+(mac Os)
+```bash
+/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+brew install oracle-jdk --cask
+```
+when the installation is complete, type this command:
+```bash
+java -jar GalaxyClient.jar
+```
 ---
 ## If linux error sound
 
