@@ -45,6 +45,7 @@ If you are a Linux user and the game has sound errors or no sound, please use th
 ## 🚀 How to Build
 
 Requirements to build
+
   JDK 8 or higher
 
 
