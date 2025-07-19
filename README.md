@@ -3,7 +3,7 @@
 This is a simple Java-based installer for the Galaxy Client Minecraft.  
 It downloads the Galaxy Client from GitHub and installs it directly into your `.minecraft` directory.
 
-If you use Windows to run exe files, download [JRE](https://www.java.com/en/download/manual.jsp) to run the application.
+If you use Windows to run exe files, download [JRE 8](https://www.java.com/en/download/manual.jsp) to run the application.
 if you use linux or mac os to run, open Terminal, then type the following: 
 (linux)
 ```bash
@@ -37,12 +37,15 @@ If you are a Linux user and the game has sound errors or no sound, please use th
 
 ## 🧱 Requirements
 
-- **JDK 8 or higher**
+- **[JRE 8](https://www.java.com/en/download/manual.jsp) or higher**
 - Internet connection to download client from GitHub
 
 ---
 
 ## 🚀 How to Build
+Requirements to build
+JDK 8 or higher
+
 
 ```bash
 # 1. Clone the repository
