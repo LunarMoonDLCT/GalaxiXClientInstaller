@@ -14,7 +14,7 @@ sudo apt install default-jre
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 brew install oracle-jdk --cask
 ```
-when the installation is complete, type this command:
+When the installation is complete, type this command:
 ```bash
 java -jar GalaxyClient.jar
 ```
@@ -31,6 +31,7 @@ If you are a Linux user and the game has sound errors or no sound, please use th
 - Install Galaxy Client Minecraft for you
 - GUI-based, built with Java Swing
 - No external dependencies
+- Added automatic deletion of junk files after installation is complete
 
 ---
 
