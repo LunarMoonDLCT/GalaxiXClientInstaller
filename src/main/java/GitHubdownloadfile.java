@@ -10,6 +10,7 @@ public class GitHubdownloadfile {
     public static Map<String, String> getAllZipReleases() throws IOException {
         URL url = new URL(API_URL);
         HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
+        System.out.println("GitHubdownload: Đang quét phiên bản hiện có");
         conn.setRequestProperty("Accept", "application/vnd.github+json");
         conn.setRequestProperty("User-Agent", "GalaxyClientInstaller");
 
@@ -26,6 +27,7 @@ public class GitHubdownloadfile {
         reader.close();
 
         // Lọc toàn các file chỉ đúng tên GalaxyClient
+        System.out.println("GitHubdownload: Hoàn tất quét phiên bản");
         Pattern pattern = Pattern.compile("\"name\"\\s*:\\s*\"(GalaxyClient[^\"]+\\.zip)\".*?\"browser_download_url\"\\s*:\\s*\"([^\"]+)\"", Pattern.DOTALL);
         Matcher matcher = pattern.matcher(json.toString());
 
@@ -35,6 +37,7 @@ public class GitHubdownloadfile {
         }
 
         if (result.isEmpty()) {
+            System.out.println("GitHubdownloadfile: Không tìm thấy bản phát hành nào!");
             throw new IOException("Không tìm thấy bản phát hành nào!");
         }
 
@@ -42,11 +45,13 @@ public class GitHubdownloadfile {
     }
 
     public static File downloadZip(String urlStr, String versionTag, File installDir) throws IOException {
+        System.out.println("GitHubdownload: Đang download");
         URL url = new URL(urlStr);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestProperty("User-Agent", "GalaxyClientInstaller");
 
         if (conn.getResponseCode() != 200) {
+            System.out.println("GitHubdownloadfile: Error Download!");
             throw new IOException("Không thể tải về file từ GitHub: " + conn.getResponseCode());
         }
 
@@ -62,7 +67,7 @@ public class GitHubdownloadfile {
                 out.write(buffer, 0, bytesRead);
             }
         }
-
+        System.out.println("GitHubdownload: Hoàn tất tải");
         return zipFile;
     }
 }

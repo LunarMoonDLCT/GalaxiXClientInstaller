@@ -70,7 +70,7 @@ goto fail
 :execute
 @rem Setup the command line
 
-set CLASSPATH=%APP_HOME%\lib\Galaxy-Client-Installer-0.2.1.jar
+set CLASSPATH=%APP_HOME%\lib\Galaxy-Client-Installer-0.2.2.jar
 
 
 @rem Execute Galaxy-Client-Installer

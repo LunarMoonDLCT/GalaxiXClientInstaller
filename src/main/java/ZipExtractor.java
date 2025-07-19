@@ -14,7 +14,7 @@ public class ZipExtractor {
                 String entryName = entry.getName();
                 File filePath = new File(destDir, entryName);
 
-                System.out.println("👉 Đang xử lý: " + entryName);
+                System.out.println("ZipExtractor: Đang xử lý: " + entryName);
 
                 try {
                     if (entry.isDirectory()) {
@@ -40,7 +40,7 @@ public class ZipExtractor {
                 } catch (Exception ex) {
                     System.err.println("❌ Lỗi tại: " + filePath.getAbsolutePath());
                     ex.printStackTrace();
-                    throw new IOException("Không thể giải nén file: " + filePath.getAbsolutePath() + "\nLý do: " + ex.getMessage());
+                    throw new IOException("ZipExtractor: Không thể giải nén file: " + filePath.getAbsolutePath() + "\nLý do: " + ex.getMessage());
                 }
 
                 zipIn.closeEntry();
