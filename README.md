@@ -44,10 +44,12 @@ If you are a Linux user and the game has sound errors or no sound, please use th
 
 ## 🚀 How to Build
 
-Requirements to build
+1.Requirements to build
 
   JDK 8 or higher
 
+---
+2.Build commands
 
 ```bash
 # 1. Clone the repository
