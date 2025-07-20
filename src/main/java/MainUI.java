@@ -130,7 +130,7 @@ public class MainUI extends JFrame {
 
         File mcFolder = new File(installPath);
         File modsOld = new File(mcFolder, "mods.old");
-        File configOld = new File(mcFolder, "config.old");
+//        File configOld = new File(mcFolder, "config.old");
 
         installButton.setEnabled(false);
         installButton.setText("Đang cài đặt...");
@@ -141,7 +141,7 @@ public class MainUI extends JFrame {
                 // Nếu mods.old hoặc config.old tồn tại → nén lại
                 List<File> toZip = new ArrayList<>();
                 if (modsOld.exists()) toZip.add(modsOld);
-                if (configOld.exists()) toZip.add(configOld);
+//                if (configOld.exists()) toZip.add(configOld);
 
                 if (!toZip.isEmpty()) {
                     String time = new SimpleDateFormat("yyyyMMdd-HHmmss").format(new Date());
@@ -152,9 +152,9 @@ public class MainUI extends JFrame {
 
                 // Backup các file sau
                 File mods = new File(mcFolder, "mods");
-                File config = new File(mcFolder, "config");
+//                File config = new File(mcFolder, "config");
                 if (mods.exists()) mods.renameTo(modsOld);
-                if (config.exists()) config.renameTo(configOld);
+//                if (config.exists()) config.renameTo(configOld);
 
                 File zip = GitHubdownloadfile.downloadZip(versionMap.get(versionName), versionName, mcFolder);
                 ZipExtractor.extract(zip, mcFolder);
