@@ -7,7 +7,7 @@ It downloads the Galaxy Client from GitHub and installs it directly into your `.
 
 - Recommend jar file for installation.
  Click here -> [**here**](https://github.com/LunarMoonDLCT/GalaxyClientInstaller/releases/latest) <- to download the latest version.
-
+---
 If you use Windows to run exe files, download [**JRE 8**](https://www.java.com/en/download/manual.jsp) to run the application.
 if you use linux or mac os to run, open Terminal, then type the following: 
 (linux)
@@ -26,7 +26,7 @@ java -jar GalaxyClient.jar
 ---
 ## ❗ If linux error sound in game
 
-If you are a Linux user and the game has sound errors or no sound in game, please use the [fabric](https://fabricmc.net/) version to fix the error.
+If you are a Linux user and the game has sound errors or no sound in game, please use the [fabric](https://fabricmc.net/) version in game to fix the error.
 
 ---
 
