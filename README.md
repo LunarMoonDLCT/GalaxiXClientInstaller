@@ -1,5 +1,4 @@
-- Recommend jar file for installation.
-- [Latest version](https://github.com/LunarMoonDLCT/GalaxyClientInstaller/releases/latest)
+- Recommend jar file for installation. Click here -> [Latest version](https://github.com/LunarMoonDLCT/GalaxyClientInstaller/releases/latest) to download the latest version.
 
 # Galaxy Client Installer
 
