@@ -20,7 +20,7 @@ public class MainUI extends JFrame {
 
     public MainUI() {
         System.out.println("MainUI: Hiện cửa sổ");
-        setTitle("Galaxy Client Installer 0.2.2");
+        setTitle("Galaxy Client Installer 0.2.3");
         setSize(450, 200);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -169,6 +169,7 @@ public class MainUI extends JFrame {
             } catch (Exception ex) {
                 SwingUtilities.invokeLater(() -> {
                     installButton.setEnabled(true);
+					progressBar.setVisible(false);
                     installButton.setText("Cài đặt");
                     JOptionPane.showMessageDialog(this, "Cài đặt thất bại:\n" + ex.getMessage(),
                             "Lỗi", JOptionPane.ERROR_MESSAGE);
