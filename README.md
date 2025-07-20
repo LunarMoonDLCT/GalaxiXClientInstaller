@@ -1,9 +1,10 @@
 Recommend jar file for installation. Click -> [**here**](https://github.com/LunarMoonDLCT/GalaxyClientInstaller/releases/latest) <- to download the latest version.
 ---
 # ✨ Galaxy Client Installer
----
+
 This is a simple Java-based installer for the Galaxy Client Minecraft.  
-It downloads the Galaxy Client from GitHub and installs it directly into your `.minecraft` directory.
+It downloads the Galaxy Client from GitHub and installs it directly into your minecraft directory.
+
 ---
 - Recommend jar file for installation.
  Click here -> [**here**](https://github.com/LunarMoonDLCT/GalaxyClientInstaller/releases/latest) <- to download the latest version.
