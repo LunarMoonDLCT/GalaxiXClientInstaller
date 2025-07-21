@@ -22,7 +22,8 @@ brew install oracle-jdk --cask
 ```
 When the installation is complete, type this command:
 ```bash
-java -jar GalaxyClient.jar
+cd your-dir
+java -jar GalaxyClient-Installer-0.2.4-Universal.jar
 ```
 ---
 ## ❗ If linux error sound in game
