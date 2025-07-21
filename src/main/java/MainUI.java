@@ -1,4 +1,4 @@
-// MainUI.java
+// MainUI.java MAIN APP
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
@@ -20,7 +20,7 @@ public class MainUI extends JFrame {
 
     public MainUI() {
         System.out.println("MainUI: Hiện cửa sổ");
-        setTitle("Galaxy Client Installer 0.2.3");
+        setTitle("Galaxy Client Installer 0.2.4");
         setSize(450, 200);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -164,7 +164,7 @@ public class MainUI extends JFrame {
                     installButton.setEnabled(true);
                     progressBar.setVisible(false);
                     installButton.setText("Cài đặt");
-                    JOptionPane.showMessageDialog(this, "Cài đặt thành công!", "Thành công", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Cài đặt hoàn tất! Hãy mở launcher minecraft của bạn và chạy phiên bản vừa cài để chơi thôi!", "Cài đặt hoàn tất!", JOptionPane.INFORMATION_MESSAGE);
                 });
             } catch (Exception ex) {
                 SwingUtilities.invokeLater(() -> {
@@ -178,6 +178,7 @@ public class MainUI extends JFrame {
         }).start();
     }
     private JProgressBar progressBar;
+	
 
 
     private void zipFolders(List<File> folders, File zipFile) throws IOException {
