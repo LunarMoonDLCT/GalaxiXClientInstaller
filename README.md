@@ -37,8 +37,8 @@ If you are a Linux user and the game has sound errors or no sound in game, pleas
 - Easy to use
 - Install Galaxy Client Minecraft for you
 - GUI-based, built with Java Swing
-- No external dependencies
 - Added automatic deletion of junk files after installation is complete
+- FlatDarkLaf Theme
 
 ---
 
