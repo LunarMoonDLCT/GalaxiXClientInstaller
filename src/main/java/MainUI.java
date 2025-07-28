@@ -1,4 +1,9 @@
-// MainUI.java MAIN APP
+// LunarMoon was here
+
+//------------------Theme------------------//
+import com.formdev.flatlaf.FlatDarkLaf;    //
+//-----------------------------------------//
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
@@ -8,6 +13,7 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
+import javax.imageio.ImageIO;
 
 public class MainUI extends JFrame {
     private JComboBox<String> versionCombo;
@@ -19,8 +25,21 @@ public class MainUI extends JFrame {
     private Map<String, String> versionMap;
 
     public MainUI() {
+        try {
+            UIManager.setLookAndFeel(new FlatDarkLaf());
+        } catch (Exception ex) {
+            System.err.println("Không thể áp dụng FlatDarkLaf: " + ex.getMessage()); //PLS DONT ERROR
+        }
+
+        try (InputStream is = getClass().getResourceAsStream("/GC/assets/icon/galaxy2.png")) {
+            if (is != null) {
+                Image icon = ImageIO.read(is);
+                setIconImage(icon);
+            }
+        } catch (Exception e) {}
+
         System.out.println("MainUI: Hiện cửa sổ");
-        setTitle("Galaxy Client Installer 0.2.4");
+        setTitle("Galaxy Client Installer 0.2.5");
         setSize(450, 200);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -58,11 +77,20 @@ public class MainUI extends JFrame {
         browseButton.addActionListener(e -> {
             JFileChooser chooser = new JFileChooser();
             chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+            // ✅ Gán thư mục mặc định từ pathField nếu tồn tại
+            String currentPath = pathField.getText();
+            File currentDir   = new File(currentPath);
+            if (currentDir.exists() && currentDir.isDirectory()) {
+                chooser.setCurrentDirectory(currentDir);
+            }
+
             if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
                 File selected = chooser.getSelectedFile();
                 pathField.setText(selected.getAbsolutePath());
             }
         });
+
 
         profileCheckbox = new JCheckBox("Tạo hồ sơ trong launcher");
         profileCheckbox.setSelected(true);

@@ -5,11 +5,16 @@ plugins {
 
 
 group = 'com.galaxyclient'
-version = '0.2.4'
+version = '0.2.5'
 
 repositories {
     mavenCentral()
 }
+// já và :)
+dependencies {
+    implementation 'com.formdev:flatlaf:3.4'
+}
+
 
 application {
     mainClass = 'Main'
