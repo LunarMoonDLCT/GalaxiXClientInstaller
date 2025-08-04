@@ -10,11 +10,6 @@ version = '0.2.5'
 repositories {
     mavenCentral()
 }
-// já và :)
-dependencies {
-    implementation 'com.formdev:flatlaf:3.4'
-}
-
 
 application {
     mainClass = 'Main'
@@ -36,3 +31,4 @@ jar {
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
+
