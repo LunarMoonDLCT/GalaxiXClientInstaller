@@ -11,6 +11,7 @@ It downloads the Galaxy Client from GitHub and installs it directly into your mi
 ---
 If you use Windows to run exe files, download [**JRE 8**](https://www.java.com/en/download/manual.jsp) to run the application.
 if you use linux or mac os to run, open Terminal, then type the following: 
+
 (linux)
 ```bash
 sudo apt install default-jre
