@@ -18,7 +18,7 @@ sudo apt install default-jre
 ```
 (mac Os)
 ```bash
-/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+/usr/bin/ruby -e "$(curl -fsSL /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)")"
 brew install oracle-jdk --cask
 ```
 When the installation is complete, type this command:
