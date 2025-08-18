@@ -5,11 +5,12 @@ plugins {
 
 
 group = 'com.galaxyclient'
-version = '0.2.5'
+version = '0.2.7'
 
 repositories {
     mavenCentral()
 }
+
 
 application {
     mainClass = 'Main'
@@ -31,4 +32,3 @@ jar {
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
-
