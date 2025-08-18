@@ -9,8 +9,11 @@ public class Main {
             System.err.println("[Theme] Không thể load theme: " + e.getMessage());
         }
 
+        String langCode = Langdetect.detectLangCode();
+        Langdetect.load(langCode);
+
         javax.swing.SwingUtilities.invokeLater(() -> {
-            System.out.println("Đang load Galaxy Client Installer 0.2.6");
+            System.out.println("Đang load Galaxy Client Installer 0.2.7");
             new MainUI().setVisible(true);
         });
     }

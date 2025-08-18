@@ -1,0 +1,11 @@
+title=GalaxyClient Installer 0.2.7
+label.version=Version:
+label.path=Minecraft Path:
+button.install=Install
+button.installing=Installing...
+button.browse=...
+checkbox.profile=Create profile in launcher
+msg.invalidVersion=Please select a valid version.
+msg.invalidPath=Please select an installation directory.
+msg.done=Installation complete! Open your Minecraft launcher and run the installed version.
+msg.failed=Installation failed:\n{0}

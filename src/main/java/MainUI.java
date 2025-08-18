@@ -18,8 +18,8 @@ public class MainUI extends JFrame {
     private JCheckBox profileCheckbox;
     private JButton installButton;
     private JButton browseButton;
-
     private Map<String, String> versionMap;
+    private JProgressBar progressBar;
 
     public MainUI() {
         try (InputStream is = getClass().getResourceAsStream("/GC/assets/icon/galaxy2.png")) {
@@ -31,7 +31,7 @@ public class MainUI extends JFrame {
 
 //Debug spam windows        SwingUtilities.invokeLater(() -> new MainUI().setVisible(true));
         System.out.println("MainUI: Hiện cửa sổ");
-        setTitle("Galaxy Client Installer 0.2.6");
+        setTitle(Langdetect.get("title"));
         setSize(450, 200);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -48,24 +48,24 @@ public class MainUI extends JFrame {
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
         gbc.gridx = 0; gbc.gridy = 0; gbc.weightx = 0.2;
-        panel.add(new JLabel("Phiên bản:"), gbc);
+        panel.add(new JLabel(Langdetect.get("label.version")), gbc);
 
-        versionCombo = new JComboBox<>(new String[]{"Đang tải..."});
+        versionCombo = new JComboBox<>(new String[]{Langdetect.get("loading")});
         versionCombo.setEnabled(false);
         gbc.gridx = 1; gbc.gridy = 0; gbc.weightx = 0.8;
         panel.add(versionCombo, gbc);
 
         gbc.gridx = 0; gbc.gridy = 1;
-        panel.add(new JLabel("Đường dẫn Minecraft:"), gbc);
+        panel.add(new JLabel(Langdetect.get("label.path")), gbc);
 
         pathField = new JTextField(getDefaultMinecraftPath());
         gbc.gridx = 1; gbc.gridy = 1;
         panel.add(pathField, gbc);
 
-        browseButton = new JButton("...");
+        browseButton = new JButton(Langdetect.get("button.browse"));
         gbc.gridx = 2; gbc.gridy = 1; gbc.weightx = 0;
         panel.add(browseButton, gbc);
-        
+
         browseButton.setPreferredSize(new Dimension(23, 23));
         browseButton.addActionListener(e -> {
             JFileChooser chooser = new JFileChooser();
@@ -83,25 +83,22 @@ public class MainUI extends JFrame {
             }
         });
 
-
-        profileCheckbox = new JCheckBox("Tạo hồ sơ trong launcher");
+        profileCheckbox = new JCheckBox(Langdetect.get("checkbox.profile"));
         profileCheckbox.setSelected(true);
         gbc.gridx = 1; gbc.gridy = 2; gbc.gridwidth = 2;
         panel.add(profileCheckbox, gbc);
 
-        installButton = new JButton("Cài đặt");
+        installButton = new JButton(Langdetect.get("button.install"));
         gbc.gridx = 1; gbc.gridy = 3; gbc.gridwidth = 2;  
         gbc.insets = new Insets(10, 0, 0, 0);
         panel.add(installButton, gbc);
 
-
         progressBar = new JProgressBar();
-        progressBar.setIndeterminate(true); // Thanh loding
-        progressBar.setVisible(false); // ẩn lúc mở app
+        progressBar.setIndeterminate(true);
+        progressBar.setVisible(false);
 
         gbc.gridx = 1; gbc.gridy = 4; gbc.gridwidth = 2;
         panel.add(progressBar, gbc);
-   
 
         installButton.addActionListener(e -> onInstall());
 
@@ -128,8 +125,8 @@ public class MainUI extends JFrame {
             } catch (Exception ex) {
                 SwingUtilities.invokeLater(() -> {
                     JOptionPane.showMessageDialog(this,
-                            "Không thể lấy danh sách phiên bản từ GitHub:\n" + ex.getMessage(),
-                            "Lỗi", JOptionPane.ERROR_MESSAGE);
+                            Langdetect.get("msg.cannotFetch") + "\n" + ex.getMessage(),
+                            "Error", JOptionPane.ERROR_MESSAGE);
                 });
             }
         }).start();
@@ -138,13 +135,17 @@ public class MainUI extends JFrame {
     private void onInstall() {
         String versionName = (String) versionCombo.getSelectedItem();
         if (versionName == null || !versionMap.containsKey(versionName)) {
-            JOptionPane.showMessageDialog(this, "Vui lòng chọn phiên bản hợp lệ.", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this,
+                    Langdetect.get("msg.invalidVersion"),
+                    "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
         String installPath = pathField.getText();
         if (installPath == null || installPath.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Vui lòng chọn thư mục cài đặt.", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this,
+                    Langdetect.get("msg.invalidPath"),
+                    "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
@@ -153,12 +154,12 @@ public class MainUI extends JFrame {
 //        File configOld = new File(mcFolder, "config.old");
 
         installButton.setEnabled(false);
-        installButton.setText("Đang cài đặt...");
+        installButton.setText(Langdetect.get("button.installing"));
         progressBar.setVisible(true);
 
         new Thread(() -> {
             try {
-                // Nếu mods.old hoặc config.old tồn tại → nén lại
+                // Nếu mods.old đã có → nén lại
                 List<File> toZip = new ArrayList<>();
                 if (modsOld.exists()) toZip.add(modsOld);
 //                if (configOld.exists()) toZip.add(configOld);
@@ -170,7 +171,6 @@ public class MainUI extends JFrame {
                     for (File f : toZip) deleteRecursively(f);
                 }
 
-                // Backup các file sau
                 File mods = new File(mcFolder, "mods");
 //                File config = new File(mcFolder, "config");
                 if (mods.exists()) mods.renameTo(modsOld);
@@ -183,23 +183,23 @@ public class MainUI extends JFrame {
                 SwingUtilities.invokeLater(() -> {
                     installButton.setEnabled(true);
                     progressBar.setVisible(false);
-                    installButton.setText("Cài đặt");
-                    JOptionPane.showMessageDialog(this, "Cài đặt hoàn tất! Hãy mở launcher minecraft của bạn và chạy phiên bản vừa cài để chơi thôi!", "Cài đặt hoàn tất!", JOptionPane.INFORMATION_MESSAGE);
+                    installButton.setText(Langdetect.get("button.install"));
+                    JOptionPane.showMessageDialog(this,
+                            Langdetect.get("msg.done"),
+                            "OK", JOptionPane.INFORMATION_MESSAGE);
                 });
             } catch (Exception ex) {
                 SwingUtilities.invokeLater(() -> {
                     installButton.setEnabled(true);
-					progressBar.setVisible(false);
-                    installButton.setText("Cài đặt");
-                    JOptionPane.showMessageDialog(this, "Cài đặt thất bại:\n" + ex.getMessage(),
-                            "Lỗi", JOptionPane.ERROR_MESSAGE);
+                    progressBar.setVisible(false);
+                    installButton.setText(Langdetect.get("button.install"));
+                    JOptionPane.showMessageDialog(this,
+                            Langdetect.get("msg.failed").replace("{0}", ex.getMessage()),
+                            "Error", JOptionPane.ERROR_MESSAGE);
                 });
             }
         }).start();
     }
-    private JProgressBar progressBar;
-	
-
 
     private void zipFolders(List<File> folders, File zipFile) throws IOException {
         try (FileOutputStream fos = new FileOutputStream(zipFile);
@@ -209,7 +209,6 @@ public class MainUI extends JFrame {
             }
         }
     }
-    
 
     private void zipFile(File fileToZip, String fileName, ZipOutputStream zos) throws IOException {
         if (fileToZip.isHidden()) return;
