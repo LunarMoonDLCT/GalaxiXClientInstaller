@@ -1,0 +1,12 @@
+title=Установщик GalaxiXClient 0.2.8
+label.version=Версия:
+label.build=Построить версию:
+label.path=Путь Minecraft:
+button.install=Установить
+button.installing=Устанавливается...
+button.browse=...
+checkbox.profile=Создать профиль в лаунчере
+msg.invalidVersion=Пожалуйста, выберите правильную версию.
+msg.invalidPath=Пожалуйста, выберите папку для установки.
+msg.done=Установка завершена! Откройте лаунчер Minecraft и запустите установленную версию.
+msg.failed=Ошибка установки:\n{0}

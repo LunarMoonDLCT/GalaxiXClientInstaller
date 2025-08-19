@@ -1,0 +1,12 @@
+title=Bộ cài GalaxiXClient 0.2.8
+label.version=Phiên bản:
+label.build=Phiên bản build:
+label.path=Đường dẫn Minecraft:
+button.install=Cài đặt
+button.installing=Đang cài đặt...
+button.browse=...
+checkbox.profile=Tạo hồ sơ trong launcher
+msg.invalidVersion=Vui lòng chọn phiên bản hợp lệ.
+msg.invalidPath=Vui lòng chọn thư mục cài đặt.
+msg.done=Cài đặt hoàn tất! Hãy mở launcher minecraft và chạy phiên bản vừa cài.
+msg.failed=Cài đặt thất bại:\n{0}

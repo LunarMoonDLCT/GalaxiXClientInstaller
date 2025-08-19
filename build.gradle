@@ -4,7 +4,7 @@ plugins {
 
 
 
-group = 'com.galaxyclient'
+group = 'com.galaxixclient'
 version = '0.2.8'
 
 repositories {
