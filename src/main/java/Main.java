@@ -13,7 +13,7 @@ public class Main {
         Langdetect.load(langCode);
 
         javax.swing.SwingUtilities.invokeLater(() -> {
-            System.out.println("Đang load Galaxy Client Installer 0.2.7");
+            System.out.println("Đang load Galaxy Client Installer 0.2.8");
             new MainUI().setVisible(true);
         });
     }

@@ -19,7 +19,7 @@ public class Langdetect {
             }
         } catch (Exception e) {
             System.err.println("⚠️ Không thể load file ngôn ngữ, đưa về mặc định tiếng anh");
-            if (!langCode.equals("en")) load("en");
+            if (!langCode.equals("en_us")) load("en_us");
         }
     }
 
@@ -36,7 +36,7 @@ public class Langdetect {
         switch (sysLang) {
             case "vi": return "vi";
             case "ru": return "ru";
-            default: return "en";
+            default: return "en_us";
         }
     }
 }

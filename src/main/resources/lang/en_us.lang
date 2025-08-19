@@ -1,5 +1,6 @@
-title=GalaxyClient Installer 0.2.7
+title=GalaxyClient Installer 0.2.8
 label.version=Version:
+label.build=Build version:
 label.path=Minecraft Path:
 button.install=Install
 button.installing=Installing...

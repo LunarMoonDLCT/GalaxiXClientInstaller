@@ -14,11 +14,13 @@ import javax.imageio.ImageIO;
 
 public class MainUI extends JFrame {
     private JComboBox<String> versionCombo;
+    private JComboBox<String> buildCombo;
     private JTextField pathField;
     private JCheckBox profileCheckbox;
     private JButton installButton;
     private JButton browseButton;
     private Map<String, String> versionMap;
+    private Map<String, List<String>> buildMap;
     private JProgressBar progressBar;
 
     public MainUI() {
@@ -29,10 +31,10 @@ public class MainUI extends JFrame {
             }
         } catch (Exception e) {}
 
-//Debug spam windows        SwingUtilities.invokeLater(() -> new MainUI().setVisible(true));
+        // Debug spam windows        SwingUtilities.invokeLater(() -> new MainUI().setVisible(true));
         System.out.println("MainUI: Hiện cửa sổ");
         setTitle(Langdetect.get("title"));
-        setSize(450, 200);
+        setSize(450, 230);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
@@ -56,14 +58,22 @@ public class MainUI extends JFrame {
         panel.add(versionCombo, gbc);
 
         gbc.gridx = 0; gbc.gridy = 1;
+        panel.add(new JLabel(Langdetect.get("label.build")), gbc);
+
+        buildCombo = new JComboBox<>(new String[]{Langdetect.get("loading")});
+        buildCombo.setEnabled(false);
+        gbc.gridx = 1; gbc.gridy = 1; gbc.weightx = 0.8;
+        panel.add(buildCombo, gbc);
+
+        gbc.gridx = 0; gbc.gridy = 2;
         panel.add(new JLabel(Langdetect.get("label.path")), gbc);
 
         pathField = new JTextField(getDefaultMinecraftPath());
-        gbc.gridx = 1; gbc.gridy = 1;
+        gbc.gridx = 1; gbc.gridy = 2;
         panel.add(pathField, gbc);
 
         browseButton = new JButton(Langdetect.get("button.browse"));
-        gbc.gridx = 2; gbc.gridy = 1; gbc.weightx = 0;
+        gbc.gridx = 2; gbc.gridy = 2; gbc.weightx = 0;
         panel.add(browseButton, gbc);
 
         browseButton.setPreferredSize(new Dimension(23, 23));
@@ -85,11 +95,11 @@ public class MainUI extends JFrame {
 
         profileCheckbox = new JCheckBox(Langdetect.get("checkbox.profile"));
         profileCheckbox.setSelected(true);
-        gbc.gridx = 1; gbc.gridy = 2; gbc.gridwidth = 2;
+        gbc.gridx = 1; gbc.gridy = 3; gbc.gridwidth = 2;
         panel.add(profileCheckbox, gbc);
 
         installButton = new JButton(Langdetect.get("button.install"));
-        gbc.gridx = 1; gbc.gridy = 3; gbc.gridwidth = 2;  
+        gbc.gridx = 1; gbc.gridy = 4; gbc.gridwidth = 2;  
         gbc.insets = new Insets(10, 0, 0, 0);
         panel.add(installButton, gbc);
 
@@ -97,10 +107,21 @@ public class MainUI extends JFrame {
         progressBar.setIndeterminate(true);
         progressBar.setVisible(false);
 
-        gbc.gridx = 1; gbc.gridy = 4; gbc.gridwidth = 2;
+        gbc.gridx = 1; gbc.gridy = 5; gbc.gridwidth = 2;
         panel.add(progressBar, gbc);
 
         installButton.addActionListener(e -> onInstall());
+
+        versionCombo.addActionListener(e -> {
+            String base = (String) versionCombo.getSelectedItem();
+            if (base != null && buildMap.containsKey(base)) {
+                buildCombo.removeAllItems();
+                for (String b : buildMap.get(base)) {
+                    buildCombo.addItem(b);
+                }
+                buildCombo.setEnabled(true);
+            }
+        });
 
         add(panel);
     }
@@ -109,18 +130,45 @@ public class MainUI extends JFrame {
         new Thread(() -> {
             try {
                 Map<String, String> rawMap = GitHubdownloadfile.getAllZipReleases();
-                List<Entry<String, String>> sortedList = new ArrayList<>(rawMap.entrySet());
-                sortedList.sort((a, b) -> compareVersions(b.getKey(), a.getKey()));
+
+                List<Entry<String, String>> releaseList = new ArrayList<>(rawMap.entrySet());
 
                 versionMap = new LinkedHashMap<>();
-                for (Entry<String, String> e : sortedList) {
-                    versionMap.put(e.getKey(), e.getValue());
+                buildMap = new LinkedHashMap<>();
+
+                for (Entry<String, String> e : releaseList) {
+                    String fullVersion = e.getKey();
+                    String baseVersion = fullVersion;
+                    String build = "default";
+
+                    String[] parts = fullVersion.split("-");
+                    if (parts.length >= 3) {
+                        baseVersion = parts[0] + "-" + parts[1];
+                        build = String.join("-", Arrays.copyOfRange(parts, 2, parts.length));
+                    }
+
+                    versionMap.put(fullVersion, e.getValue());
+                    buildMap.computeIfAbsent(baseVersion, k -> new ArrayList<>()).add(build);
                 }
+
+                List<String> sortedBaseVersions = new ArrayList<>(buildMap.keySet());
+                sortedBaseVersions.sort((a, b) -> compareVersion(b, a)); 
 
                 SwingUtilities.invokeLater(() -> {
                     versionCombo.removeAllItems();
-                    for (String v : versionMap.keySet()) versionCombo.addItem(v);
+                    for (String v : sortedBaseVersions) {
+                        versionCombo.addItem(v);
+                    }
                     versionCombo.setEnabled(true);
+                    if (versionCombo.getItemCount() > 0) {
+                        versionCombo.setSelectedIndex(0);
+                        String firstBase = (String) versionCombo.getSelectedItem();
+                        buildCombo.removeAllItems();
+                        for (String b : buildMap.get(firstBase)) {
+                            buildCombo.addItem(b);
+                        }
+                        buildCombo.setEnabled(true);
+                    }
                 });
             } catch (Exception ex) {
                 SwingUtilities.invokeLater(() -> {
@@ -133,8 +181,17 @@ public class MainUI extends JFrame {
     }
 
     private void onInstall() {
-        String versionName = (String) versionCombo.getSelectedItem();
-        if (versionName == null || !versionMap.containsKey(versionName)) {
+        String baseVersion = (String) versionCombo.getSelectedItem();
+        String build = (String) buildCombo.getSelectedItem();
+        if (baseVersion == null || build == null) {
+            JOptionPane.showMessageDialog(this,
+                    Langdetect.get("msg.invalidVersion"),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        String versionName = baseVersion + "-" + build;
+        if (!versionMap.containsKey(versionName)) {
             JOptionPane.showMessageDialog(this,
                     Langdetect.get("msg.invalidVersion"),
                     "Error", JOptionPane.ERROR_MESSAGE);
@@ -151,7 +208,6 @@ public class MainUI extends JFrame {
 
         File mcFolder = new File(installPath);
         File modsOld = new File(mcFolder, "mods.old");
-//        File configOld = new File(mcFolder, "config.old");
 
         installButton.setEnabled(false);
         installButton.setText(Langdetect.get("button.installing"));
@@ -162,7 +218,6 @@ public class MainUI extends JFrame {
                 // Nếu mods.old đã có → nén lại
                 List<File> toZip = new ArrayList<>();
                 if (modsOld.exists()) toZip.add(modsOld);
-//                if (configOld.exists()) toZip.add(configOld);
 
                 if (!toZip.isEmpty()) {
                     String time = new SimpleDateFormat("yyyyMMdd-HHmmss").format(new Date());
@@ -172,9 +227,7 @@ public class MainUI extends JFrame {
                 }
 
                 File mods = new File(mcFolder, "mods");
-//                File config = new File(mcFolder, "config");
                 if (mods.exists()) mods.renameTo(modsOld);
-//                if (config.exists()) config.renameTo(configOld);
 
                 File zip = GitHubdownloadfile.downloadZip(versionMap.get(versionName), versionName, mcFolder);
                 ZipExtractor.extract(zip, mcFolder);
@@ -254,15 +307,31 @@ public class MainUI extends JFrame {
         else return System.getProperty("user.home") + "/.minecraft";
     }
 
-    private int compareVersions(String v1, String v2) {
-        String[] a = v1.replaceAll("[^\\d.]", "").split("\\.");
-        String[] b = v2.replaceAll("[^\\d.]", "").split("\\.");
-        int len = Math.max(a.length, b.length);
-        for (int i = 0; i < len; i++) {
-            int ai = i < a.length ? Integer.parseInt(a[i]) : 0;
-            int bi = i < b.length ? Integer.parseInt(b[i]) : 0;
-            if (ai != bi) return ai - bi;
+    private int compareVersion(String v1, String v2) {
+        try {
+            String s1 = v1.substring(v1.lastIndexOf("-") + 1);
+            String s2 = v2.substring(v2.lastIndexOf("-") + 1);
+
+            String[] p1 = s1.split("\\.");
+            String[] p2 = s2.split("\\.");
+
+            int len = Math.max(p1.length, p2.length);
+            for (int i = 0; i < len; i++) {
+                int n1 = i < p1.length ? parseSafe(p1[i]) : 0;
+                int n2 = i < p2.length ? parseSafe(p2[i]) : 0;
+                if (n1 != n2) return Integer.compare(n1, n2);
+            }
+            return 0;
+        } catch (Exception e) {
+            return v1.compareTo(v2);
         }
-        return 0;
+    }
+
+    private int parseSafe(String s) {
+        try {
+            return Integer.parseInt(s.replaceAll("[^0-9]", ""));
+        } catch (Exception e) {
+            return 0;
+        }
     }
 }

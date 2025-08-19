@@ -1,5 +1,6 @@
-title=Bộ cài GalaxyClient 0.2.7
+title=Bộ cài GalaxyClient 0.2.8
 label.version=Phiên bản:
+label.build=Phiên bản build:
 label.path=Đường dẫn Minecraft:
 button.install=Cài đặt
 button.installing=Đang cài đặt...
