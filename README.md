@@ -1,8 +1,8 @@
 Click -> [**here**](https://github.com/LunarMoonDLCT/GalaxyClientInstaller/releases/latest) <- to download the latest version.
 ---
-# ✨ Galaxy Client Installer
+# ✨ GalaxiX Client Installer
 
-This is a simple Java-based installer for the Galaxy Client Minecraft.  
+This is a simple Java-based installer for the GalaxiX Client Minecraft.  
 It downloads the Galaxy Client from GitHub and installs it directly into your minecraft directory.
 
 ---
@@ -35,7 +35,7 @@ If you are a Linux user and the game has sound errors or no sound in game, pleas
 ## ✅ Features
 
 - Easy to use
-- Install Galaxy Client Minecraft for you
+- Install GalaxiX Client Minecraft for you
 - GUI-based, built with Java Swing
 - Added automatic deletion of junk files after installation is complete
 
@@ -70,4 +70,4 @@ cd your-repo
 # Windows:
 gradlew.bat build
 
-#After the build is complete, check the output in the path: build/libs/Galaxy-Client-Installer.jar
+#After the build is complete, check the output in the path: build/libs/GalaxiX-Client-Installer.jar
